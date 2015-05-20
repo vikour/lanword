@@ -8,5 +8,6 @@ nb-configuration.xml
 .nb-gradle/
 src/testing
 palabras.db3
+.lanword
 doc/*.vpp*
 
