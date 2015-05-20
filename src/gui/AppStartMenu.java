@@ -9,10 +9,13 @@ import gui.administracion.JDialogMainAdministracion;
 import gui.juegos.traducir_palabras.JDialogMain;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import lanword.interfaces.bd.BDResolver;
 
 /**
@@ -26,6 +29,7 @@ public class AppStartMenu extends javax.swing.JFrame {
      */
     public AppStartMenu() {
         initComponents();
+        this.addWindowListener(new AppWindowListener());
         setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartup.class.getClassLoader().getResource("gui/images/icono.png")));        
     }
 
@@ -152,6 +156,12 @@ public class AppStartMenu extends javax.swing.JFrame {
                 
                 try {
                     BDResolver.getInstance().conectar();
+                    
+                    if (checkIfAnotherLanwordRuns())
+                        JOptionPane.showMessageDialog(null, "Lanword ya se está ejecutando.");
+                    else 
+                        new AppStartMenu().setVisible(true);
+                    
                 } catch (SQLException ex) {
                     Logger.getLogger(AppStartMenu.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
@@ -159,11 +169,21 @@ public class AppStartMenu extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(AppStartMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                new AppStartMenu().setVisible(true);
             }
         });
     }
+    
+    private static boolean checkIfAnotherLanwordRuns() throws IOException {
+        boolean otherLanwordRuns = false;
+        File init = new File(".lanword");
+        
+        if (init.exists())
+            otherLanwordRuns = true;
+        else
+            init.createNewFile();
+        
+        return otherLanwordRuns;
+    };
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -171,4 +191,46 @@ public class AppStartMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    private class AppWindowListener implements WindowListener {
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+            // do nothing.
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            // Se borra el fichero .lanword.
+            File f = new File(".lanword");
+            f.delete();
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+            // do nothing
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+            // do nothing
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+            // do nothing
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+            // do nothing.
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+            // do nothing
+        }
+        
+    };
+
 }

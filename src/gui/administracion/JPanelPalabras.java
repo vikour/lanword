@@ -123,7 +123,7 @@ public class JPanelPalabras extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setText("Nomre : ");
+        jLabel2.setText("Nombre : ");
 
         jLabel3.setText("Grupo :");
 
@@ -230,7 +230,7 @@ public class JPanelPalabras extends javax.swing.JPanel {
             new JDialogFormTraducciones((Frame) SwingUtilities.getWindowAncestor(this).getParent(), true).setVisible(true);
             jTable1.updateUI();
         } catch (Exception ex) {
-            Logger.getLogger(JPanelPalabras.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Tienes que crear al menos 2 idiomas.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_JButtonTraducirActionPerformed
 

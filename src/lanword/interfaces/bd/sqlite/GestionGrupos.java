@@ -109,7 +109,7 @@ public class GestionGrupos implements IBDGestionGrupos{
         ArrayList<Grupo> grupos = new ArrayList<>();
         
         try {
-            grupo = (Grupo) Grupo.buscar(new Object[] {nombre});            
+            grupo = (Grupo) ClasePersistente.buscar(Grupo.class.getName(), nombre);            
             
             if (grupo == null) {
                 con = BDSQlite.getInstance().conectar();
@@ -150,7 +150,7 @@ public class GestionGrupos implements IBDGestionGrupos{
             
             while (rs.next()) {
                 // Primero busco en la memoria.
-                grupo = (Grupo) Grupo.buscar(new Object[] {rs.getString("nombre")});
+                grupo = (Grupo) ClasePersistente.buscar(Grupo.class.getName(), rs.getString("nombre"));
 
                 // Si no existe, construyo el objeto.
                 if (grupo == null) {
@@ -194,7 +194,7 @@ public class GestionGrupos implements IBDGestionGrupos{
                if (i.getNombre().matches(idioma))
                    idioma_o = i;
            
-           palabra = (Palabra) Palabra.buscar(new Object[] {nombre, idioma_o});
+           palabra = (Palabra) ClasePersistente.buscar(Palabra.class.getName(), nombre, idioma_o);
            
            if (palabra == null) 
                palabra = BDSQlite.getInstance().palabras.buscar(nombre, idioma_o);

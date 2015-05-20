@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lanword.interfaces.bd.IBDGestionPalabras;
+import lanword.modelo.ClasePersistente;
 import lanword.modelo.Grupo;
 import lanword.modelo.Idioma;
 import lanword.modelo.Palabra;
@@ -137,7 +138,7 @@ public class GestionPalabras implements IBDGestionPalabras {
         Connection con = null;
         Grupo grupo;
         
-        palabra = (Palabra) Palabra.buscar(new Object[] {nombre, idioma});
+        palabra = (Palabra) ClasePersistente.buscar(Palabra.class.getName(), nombre, idioma);
         
         if (palabra != null)
             return palabra;
@@ -154,11 +155,11 @@ public class GestionPalabras implements IBDGestionPalabras {
             read_idioma = rs.getString("idioma");
             in_nombre = rs.getString("nombre");
             // Si no esta, recargo los datos desde la base de datos.
-            if (Idioma.buscar(new Object[] {read_idioma}) == null)
+            if (ClasePersistente.buscar(Idioma.class.getName(), read_idioma) == null)
                 BDSQlite.getInstance().idiomas.buscar();
 
             palabra = new Palabra(in_nombre,
-                                  (Idioma) Idioma.buscar(new Object[] {read_idioma}));
+                                  (Idioma) ClasePersistente.buscar(Idioma.class.getName(), read_idioma));
             palabra.stored(true);
             
             // Busco traducciones y las creo.
@@ -171,7 +172,12 @@ public class GestionPalabras implements IBDGestionPalabras {
             while (rs.next()) {
                 Idioma in_idioma = new Idioma(rs.getString("idioma_traduccion"));
                 
-                Palabra traduccion = (Palabra) Palabra.buscar(new Object[] {rs.getString("traduccion"), in_idioma});
+                Palabra traduccion = 
+                        (Palabra) ClasePersistente.buscar(
+                                Palabra.class.getName(), 
+                                rs.getString("traduccion"), 
+                                in_idioma
+                        );
                 
                 if (traduccion == null)
                     traduccion = buscar(rs.getString("traduccion"), in_idioma);
@@ -193,7 +199,7 @@ public class GestionPalabras implements IBDGestionPalabras {
             
             while (rs.next()) {
                 in_nombre = rs.getString("grupo");
-                grupo = (Grupo) Grupo.buscar(new Object [] {in_nombre});
+                grupo = (Grupo) ClasePersistente.buscar(Grupo.class.getName(), in_nombre);
                 
                 if (grupo == null)
                     //La palabra ya está en memoria, por lo que, si busco el grupo el método agrupa automáticamente.

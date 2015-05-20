@@ -5,9 +5,13 @@ import java.util.Observable;
 
 /**
  * Representa a una clase que permanecerá en memoria con un identificador establecido
- * por el constructor de la clase derivada.
+ * por el constructor de la clase derivada. También porporciona medios para marcar a las
+ * clases para saber si están almacenadas.
  * 
  * Esta clase es útil para tener en memoria siempre una estancia de un objeto.
+ * 
+ * Para implementar los identificadores de la clase hija, debes de usar el método protegido setId(), y por
+ * este se buscará en memoria.
  *
  * @author Víctor Manuel Ortiz Guardeño
  * @version 1.1
@@ -43,15 +47,21 @@ public abstract class ClasePersistente extends Observable {
      * @return Objeto con identificado pasado como argumento o NULL si no existiera.
      */
     
+    @Deprecated
     public static Object buscar(Object [] ids) {
         ObjetoData aux;
         boolean equals;
        
+        // Si hay alguna instancia almacenadas en el array...
         if (instancias != null) 
             
+            // Por cada instancia de los objetos almacenados ...
             for (int i = 0 ; i < instancias.size() ; i++) {
+                /* Obtengo en una variable auxiliar la instancia (por comodidad) y establezco al inicio
+                 * que la comparación es verdadera. Para después cambiarla si encuentro alguna diferencia. */
                 aux = instancias.get(i);
                 equals = true;
+                
                 
                 for (int j = 0 ; j < aux.ids.length && equals; j++)
                     
@@ -67,6 +77,55 @@ public abstract class ClasePersistente extends Observable {
     }
     
     /**
+     * Buscae en el registro de memoria el objeto de la clase pasada como argumento, y con los ids pasados 
+     * como argumentos.
+     * 
+     * @param nameClass  Nombre de la clase entero. (Es decir, ej. paquete.paquete.clase)
+     * @param ids        Uno o más identificadores del objeto buscado.
+     * @return El objeto buscado o NULL si no se encontrara.
+     */
+    
+    public static Object buscar(String nameClass, Object ... ids) {
+        ObjetoData aux;
+        boolean equals;
+       
+        // Si hay alguna instancia almacenadas en el array, se busca el objeto.
+        if (instancias != null) 
+            
+            // Por cada instancia de los objetos almacenados ...
+            for (int i = 0 ; i < instancias.size() ; i++) {
+                /* Obtengo en una variable auxiliar la instancia (por comodidad) y establezco al inicio
+                 * que la comparación es verdadera. Para después cambiarla si encuentro alguna diferencia. */
+                aux = instancias.get(i);
+                equals = true;
+                
+                // Si la clase buscada no es la misma que la de la instancia, se rompe la comparación...
+                if (!nameClass.matches(aux.instance.getClass().getName()))
+                    equals = false;
+                else
+                // Si el número de ids buscado, no es igual al del objeto actual, no es el buscado.
+                    if (aux.ids.length != ids.length)
+                        equals = false;
+                
+                // Si aun son iguales, por cada id, se comparan y si hay alguno distinto, se rompe la comparación.
+                for (int j = 0 ; j < aux.ids.length && equals; j++)
+
+                    if (!aux.ids[j].equals(ids[j]))
+                        equals = false;
+                
+                /* Al final, si todas las condiciones anteriores han sido superadas, significa que el objeto
+                 * que el objeto actual es el buscaod. */
+                if (equals)
+                    return aux.instance;
+                
+            }
+        
+        return null;
+    }
+    
+
+    
+    /**
      * Establece el ID del objeto y lo añade a la lista de estancias si no existiera.
      * Es necesario usarla en el constructor de la clase que quiere ser persistente.
      * 
@@ -79,7 +138,7 @@ public abstract class ClasePersistente extends Observable {
             data.ids = ids;
             data.instance = this;
             
-            if (buscar(this.data.ids) == null) {
+            if (buscar(this.getClass().getName(), this.data.ids) == null) {
                 instancias.add(data);
                 setChanged();
                 notifyObservers(new Event(Events.NEW_OBJECT));
@@ -108,12 +167,23 @@ public abstract class ClasePersistente extends Observable {
     public boolean isStored() { return data.stored; }
     
     
+    /**
+     * Esta clase es una agrupación de información que se quiere conocer de cada objeto.
+     * La información que se queire conocer es su id, su instancia y si está almacenada
+     * o no.
+     */
     
     private class ObjetoData {
+        // guarda los identificadores del objeto.
         private Object [] ids;
+        // Guarda la instancia del objeto.
         private Object instance;
+        // Guarda la marca de almacenamiento.
         private boolean stored;
         
+        /**
+         * Constructor por defecto.
+         */
         public ObjetoData() { 
 
         }
