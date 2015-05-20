@@ -47,9 +47,9 @@ public class JDialogFormAdmPalabras extends javax.swing.JDialog {
             setLocationRelativeTo(parent);
             
             jComboBoxIdiomas.addActionListener(new OnChangeLanguage());
-            
-            if (bd.idiomas.buscar().size() < 2)
-                throw new Exception("Debe de haber al menos 2 idiomas.");
+
+            if (bd.idiomas.buscar().isEmpty())
+                throw new Exception("Debe de haber al menos 1 idioma.");
 
         } catch (SQLException ex) {
             Logger.getLogger(JDialogFormAdmPalabras.class.getName()).log(Level.SEVERE, null, ex);

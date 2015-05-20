@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import lanword.interfaces.bd.IBDGestionIdiomas;
+import lanword.modelo.ClasePersistente;
 import lanword.modelo.Event;
 import lanword.modelo.Idioma;
 
@@ -72,7 +73,7 @@ public class GestionIdiomas implements IBDGestionIdiomas {
             rs = pstat.executeQuery();
             
             while (rs.next()) {
-                idioma = (Idioma) Idioma.buscar(new Object[] {rs.getString("nombre")});
+                idioma = (Idioma) ClasePersistente.buscar(Idioma.class.getName(), rs.getString("nombre"));
                 
                 if (idioma == null) {
                     idioma = new Idioma(rs.getString("nombre"));

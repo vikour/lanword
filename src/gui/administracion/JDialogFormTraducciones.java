@@ -33,8 +33,12 @@ public class JDialogFormTraducciones extends javax.swing.JDialog implements Wind
         super(parent, modal);
         
         try {
-            ignorado = PalabrasCtrl.getInstance().getSeleccionada().getIdioma();
             bd = BDResolver.getInstance();
+            
+            if (bd.idiomas.buscar().size() < 2) 
+                throw new Exception("Debe de haber al menos 2 idiomas.");
+            
+            ignorado = PalabrasCtrl.getInstance().getSeleccionada().getIdioma();
             setUndecorated(true);
             initComponents();
             setLocationByPlatform(true);
@@ -42,9 +46,6 @@ public class JDialogFormTraducciones extends javax.swing.JDialog implements Wind
             
             jComboBoxIdiomas.addActionListener(new OnChangeLanguage());
             addWindowListener(this);
-            
-            if (bd.idiomas.buscar().size() < 2)
-                throw new Exception("Debe de haber al menos 2 idiomas.");
 
         } catch (SQLException ex) {
             Logger.getLogger(JDialogFormTraducciones.class.getName()).log(Level.SEVERE, null, ex);

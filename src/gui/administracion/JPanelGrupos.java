@@ -166,8 +166,9 @@ public class JPanelGrupos extends javax.swing.JPanel {
         try {
             new JDialogFormAdmPalabras((Frame) SwingUtilities.getWindowAncestor(this).getParent(), true).setVisible(true);
             jTable1.updateUI();
+            
         } catch (Exception ex) {
-            Logger.getLogger(JPanelGrupos.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_JButtonPalabrasActionPerformed
 

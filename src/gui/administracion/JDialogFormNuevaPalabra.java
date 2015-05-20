@@ -163,9 +163,16 @@ public class JDialogFormNuevaPalabra extends javax.swing.JDialog implements Wind
             if (jCheckBox1.isSelected()) {
                 this.setVisible(false);
                 PalabrasCtrl.getInstance().setSeleccionada(palabra);
-                new JDialogFormTraducciones((Frame) SwingUtilities.getWindowAncestor(this), true).setVisible(true);
+                
+                try {
+                    new JDialogFormTraducciones((Frame) SwingUtilities.getWindowAncestor(this), true).setVisible(true);
+                    jCheckBox1.setSelected(false);
+                }
+                catch (Exception ex) {
+                    PalabrasCtrl.getInstance().setSeleccionada(null);
+                    JOptionPane.showMessageDialog(this, "Tienes que crear al menos 2 idiomas.", "Error", JOptionPane.WARNING_MESSAGE);
+                }
                 this.setVisible(true);
-                jCheckBox1.setSelected(false);
             }
             else if (!tip.isShowing()){
                 tip.setComponentLinked(jTextFieldNombre);
