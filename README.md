@@ -22,4 +22,4 @@ Si quieres además ejecutar el proyecto, ejecuta lo siguiente:
 - ant run
 
 ##Más información
-Si quieres más infomración acerca del proyecto, abre el PDF que está en [doc/documentacion.pdf](doc/documentacion.pdf)
+Si quieres más infomración acerca del proyecto, abre el PDF que está en [doc/Documentacion.pdf](doc/Documentacion.pdf)
