@@ -11,6 +11,7 @@ El programa está codificado en Java. Utiliza las librerias:
 Para compilar el programa necesitas tener instalado:
 - Apache Ant.
 - Java JDK
+
 Y si estas en windows, configuradas las variables de entorno hacia los ejecutables _ant_ y _javac_.
 
 Para compilarlo usa los siguientes comandos desde la raiz del proyecto:
