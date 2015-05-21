@@ -27,6 +27,5 @@ Si quieres además ejecutar el proyecto, ejecuta lo siguiente:
 $ ant run
 ```
 
-Si no quieres compilar el código, descarga la aplicación haciendo [click aqui](https://drive.google.com/file/d/0B8zoHa6OfVqoZThQZ2xJbzZRQjg/view?usp=sharing).
 ##Más información
 Si quieres más infomración acerca del proyecto, abre el PDF que está en [doc/Documentacion.pdf](doc/Documentacion.pdf)
