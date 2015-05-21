@@ -1,13 +1,13 @@
 ## Siguiente versión.
 
-- ### Bugs
+- *Bugs*
  - [ ] Solucionar el bug de las traducciones transitivas. Issue #6.
  - [ ] Solucionar el bug gráfico de la tabla de palabras. Issue #5.
-- ### Funcionalidad
+- *Funcionalidad*
  - [ ] Permitir cargar una estructura de palabras si la base de datos está vacía.
  - [ ] Añadir texto informativo acerca de como funciona el juego.
  - [ ] No permitir iniciar el juego si no hay al menos dos idiomas.
-- ### Documentación
+- *Documentación*
  - [ ] Pruebas realizadas.
  - [x] Manual de instalación.
  - [ ] Manual del usuario.
