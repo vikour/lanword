@@ -250,26 +250,70 @@ public class Palabra extends ClasePersistente {
      */
     
     public void quitarTraduccion(Palabra traduccion) throws IllegalArgumentException {
+        boolean rowDeleted = false;
         
         if (traduccion == null)
             throw new IllegalArgumentException("La traducción no puede ser nula.");
         else if (!seTraduceEn(traduccion))
             throw new IllegalArgumentException("\"" + nombre + "\" no se traduce en \"" + traduccion +"\"");
         
-        for (int i = 0 ; i < traducciones.size() ; i++)
-            
-            for (int j = 0 ; j < traducciones.get(i).size() ; j++)
+        for (int i = 0 ; !traducciones.isEmpty() && i < traducciones.size() ; i++) {
+            rowDeleted = false;
+        
+            for (int j = 0 ;!rowDeleted && j < traducciones.get(i).size() ; j++) {
                 
                 if (traducciones.get(i).get(j).equals(traduccion)) {
-                    traducciones.remove(traduccion);
-                    
-                    if (traducciones.get(i).isEmpty())
-                        traducciones.remove(i);
+                    traducciones.get(i).remove(j);
+                    traduccion.borrarTraduccion(this);
                 }
-        
-        if (traduccion.seTraduceEn(traduccion))
-            traduccion.quitarTraduccion(this);
+                else {
+                    
+                    if (traducciones.get(i).get(j).seTraduceEn(traduccion)) {
+                        traducciones.get(i).get(j).borrarTraduccion(traduccion);
+                        traduccion.borrarTraduccion(traducciones.get(i).get(j));
+                    }
+                    
+                    if (traducciones.get(i).get(j).seTraduceEn(this)) {
+                        traducciones.get(i).get(j).borrarTraduccion(this);
+                        traducciones.get(i).remove(j);
+                    }
+                }
+                
+                if (traducciones.get(i).isEmpty()) {
+                    traducciones.remove(i);
+                    i--;
+                    rowDeleted = true;
+                }
+            }
 
+        }
+    }
+    
+    /**
+     * Borra una traducción de la palabra. Si cuando borra la traducción se borra el array, devuelve true. Esto 
+     * es dato útil de conocer cuando se está recorriendo un for. Es decir, si devuelve true, decrementa en 1 la
+     * variable contadora.
+     * 
+     * @param traduccion Traducción que se quiere borrar.
+     * @return True si se borra el array de idiomas y false si no.
+     */
+    
+    private boolean borrarTraduccion(Palabra traduccion) {
+        boolean founded = false;
+        boolean rowDeleted = false;
+        
+        for (int i = 0; !founded && i < traducciones.size() ; i++)
+            
+            if (traducciones.get(i).get(0).getIdioma().equals(traduccion.getIdioma())) {
+                traducciones.get(i).remove(traduccion);
+                
+                if (traducciones.get(i).isEmpty()) {
+                    traducciones.remove(i);
+                    rowDeleted = true;
+                }
+            }
+
+        return rowDeleted;
     }
     
     /**
@@ -328,12 +372,11 @@ public class Palabra extends ClasePersistente {
     public void destroy() {
         super.destroy(); 
         
-        // Cuando se destruye una palabra, se borran sus relaciones con las demás palabras.
         for (ArrayList<Palabra> array : traducciones)
             
             for (Palabra traduccion : array)
+                traduccion.borrarTraduccion(this);
                 
-                traduccion.quitarTraduccion(this);
         
     }
     
