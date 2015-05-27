@@ -5,8 +5,8 @@
  - [ ] Solucionar el bug gráfico de la tabla de palabras. Issue #5.
 - *Funcionalidad*
  - [x] Permitir cargar una estructura de palabras si la base de datos está vacía.
- - [ ] Añadir texto informativo acerca de como funciona el juego.
- - [ ] No permitir iniciar el juego si no hay al menos dos idiomas.
+ - [x] Añadir texto informativo acerca de como funciona el juego.
+ - [x] No permitir iniciar el juego si no hay al menos dos idiomas.
  - [ ] Permitir desde administración ir a juego y vicebersa.
 - *Documentación*
  - [ ] Pruebas realizadas.

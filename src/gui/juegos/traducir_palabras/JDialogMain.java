@@ -8,6 +8,11 @@ package gui.juegos.traducir_palabras;
 import gui.util.GestionPaneles;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import lanword.interfaces.bd.BDResolver;
 
 /**
  *
@@ -15,9 +20,13 @@ import java.awt.event.WindowListener;
  */
 public class JDialogMain extends javax.swing.JDialog implements WindowListener {
 
-    public JDialogMain(java.awt.Frame parent, boolean modal) {
+    public JDialogMain(java.awt.Frame parent, boolean modal) throws SQLException, ClassNotFoundException, IOException, Exception {
         super(parent, modal);
         initComponents();
+        
+        if (BDResolver.getInstance().idiomas.buscar().size() < 2)
+            throw new Exception("Debe de haber al menos 2 idiomas en el sistema.");
+        
         GestionPaneles gesPaneles = new GestionPaneles(jPanelContent, null);
         JPanelInicio inicio = new JPanelInicio(gesPaneles);
         gesPaneles.setVisiblePanel(inicio, false);
@@ -101,7 +110,16 @@ public class JDialogMain extends javax.swing.JDialog implements WindowListener {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDialogMain dialog = new JDialogMain(new javax.swing.JFrame(), true);
+                JDialogMain dialog = null;
+                try {
+                    dialog = new JDialogMain(new javax.swing.JFrame(), true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

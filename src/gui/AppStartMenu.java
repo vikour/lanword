@@ -34,7 +34,7 @@ public class AppStartMenu extends javax.swing.JFrame {
     public AppStartMenu() {
         initComponents();
         this.addWindowListener(new AppWindowListener());
-        setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartup.class.getClassLoader().getResource("gui/images/icono.png")));        
+        setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartMenu.class.getClassLoader().getResource("gui/images/icono.png")));        
     }
 
     /**
@@ -113,7 +113,15 @@ public class AppStartMenu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setVisible(false);
-        new JDialogMain(this, true).setVisible(true);
+        try {
+            new JDialogMain(this, true).setVisible(true);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AppStartMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AppStartMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "No hay idiomas", JOptionPane.INFORMATION_MESSAGE);
+        }
         setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
