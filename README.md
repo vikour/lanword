@@ -15,11 +15,17 @@ Para compilar el programa necesitas tener instalado:
 Y si estas en windows, configuradas las variables de entorno hacia los ejecutables _ant_ y _javac_.
 
 Para compilarlo usa los siguientes comandos desde la raiz del proyecto:
-- ant compile
-- ant jar
+
+```
+$ ant compile
+$ ant jar
+```
 
 Si quieres además ejecutar el proyecto, ejecuta lo siguiente:
-- ant run
+
+```
+$ ant run
+```
 
 ##Más información
 Si quieres más infomración acerca del proyecto, abre el PDF que está en [doc/Documentacion.pdf](doc/Documentacion.pdf)
