@@ -98,6 +98,10 @@ public class JPanelPuntuacion extends JRoutedPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Window dialog = SwingUtilities.getWindowAncestor(this);
+        gui.WindowsController.getInstance().showAdministracion();
+        GestionPaneles gesPanel = getGestorPaneles();
+        gesPanel.atras();
+        gesPanel.atras();
         dialog.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 

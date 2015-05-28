@@ -5,33 +5,41 @@
  */
 package gui.juegos.traducir_palabras;
 
+import gui.AppStartMenu;
 import gui.util.GestionPaneles;
+import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import lanword.interfaces.bd.BDResolver;
 
 /**
  *
  * @author vikour
  */
-public class JDialogMain extends javax.swing.JDialog implements WindowListener {
+public class JDialogMain extends javax.swing.JFrame implements WindowListener {
 
-    public JDialogMain(java.awt.Frame parent, boolean modal) throws SQLException, ClassNotFoundException, IOException, Exception {
-        super(parent, modal);
+    public JDialogMain() throws HeadlessException, SQLException, ClassNotFoundException, IOException, Exception {
         initComponents();
         
         if (BDResolver.getInstance().idiomas.buscar().size() < 2)
             throw new Exception("Debe de haber al menos 2 idiomas en el sistema.");
         
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GestionPaneles gesPaneles = new GestionPaneles(jPanelContent, null);
         JPanelInicio inicio = new JPanelInicio(gesPaneles);
         gesPaneles.setVisiblePanel(inicio, false);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartMenu.class.getClassLoader().getResource("gui/images/icono.png")));   
         addWindowListener(this);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,9 +118,9 @@ public class JDialogMain extends javax.swing.JDialog implements WindowListener {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDialogMain dialog = null;
+                JDialogMain frame = null;
                 try {
-                    dialog = new JDialogMain(new javax.swing.JFrame(), true);
+                    frame = new JDialogMain();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -120,13 +128,13 @@ public class JDialogMain extends javax.swing.JDialog implements WindowListener {
                 } catch (Exception ex) {
                     Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                frame.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });
-                dialog.setVisible(true);
+                frame.setVisible(true);
             }
         });
     }
@@ -142,7 +150,7 @@ public class JDialogMain extends javax.swing.JDialog implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-    e.getWindow().dispose();
+        gui.WindowsController.lanwordEnded();
     }
 
     @Override

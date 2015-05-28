@@ -120,8 +120,10 @@ public class JPanelTraducir extends JRoutedPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Window dialog = SwingUtilities.getWindowAncestor(this);
-        dialog.setVisible(false);
+        Window w = SwingUtilities.getWindowAncestor(this);
+        gui.WindowsController.getInstance().showAdministracion();
+        super.getGestorPaneles().atras();
+        w.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButtonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContinuarActionPerformed

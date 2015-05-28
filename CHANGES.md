@@ -7,7 +7,7 @@
  - [x] Permitir cargar una estructura de palabras si la base de datos está vacía.
  - [x] Añadir texto informativo acerca de como funciona el juego.
  - [x] No permitir iniciar el juego si no hay al menos dos idiomas.
- - [ ] Permitir desde administración ir a juego y vicebersa.
+ - [x] Permitir desde administración ir a juego y vicebersa.
 - *Documentación*
  - [ ] Pruebas realizadas.
  - [x] Manual de instalación.

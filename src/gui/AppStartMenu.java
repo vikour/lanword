@@ -5,7 +5,7 @@
  */
 package gui;
 
-import gui.administracion.JDialogMainAdministracion;
+import gui.administracion.JFrameMainAdministracion;
 import gui.juegos.traducir_palabras.JDialogMain;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
@@ -112,23 +112,17 @@ public class AppStartMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        setVisible(false);
         try {
-            new JDialogMain(this, true).setVisible(true);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AppStartMenu.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(AppStartMenu.class.getName()).log(Level.SEVERE, null, ex);
+            WindowsController.getInstance().showJuego();
+            setVisible(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "No hay idiomas", JOptionPane.INFORMATION_MESSAGE);
         }
-        setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
-        new JDialogMainAdministracion(this, true).setVisible(true);
-        setVisible(true);
+        WindowsController.getInstance().showAdministracion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -169,7 +163,7 @@ public class AppStartMenu extends javax.swing.JFrame {
                 try {
                     BDResolver.getInstance().conectar();
                     
-                    if (checkIfAnotherLanwordRuns())
+                    if (WindowsController.checkIfAnotherLanwordRuns())
                         JOptionPane.showMessageDialog(null, "Lanword ya se está ejecutando.");
                     else {
 
@@ -182,8 +176,9 @@ public class AppStartMenu extends javax.swing.JFrame {
                             if (choice == JOptionPane.YES_OPTION) {
                                 generarPalabras();
                             }
+                            
                         }
-                        new AppStartMenu().setVisible(true);
+                        WindowsController.getInstance().showMenu();
                     }
 
                 } catch (SQLException ex) {
@@ -196,18 +191,6 @@ public class AppStartMenu extends javax.swing.JFrame {
             }
         });
     }
-    
-    private static boolean checkIfAnotherLanwordRuns() throws IOException {
-        boolean otherLanwordRuns = false;
-        File init = new File(".lanword");
-        
-        if (init.exists())
-            otherLanwordRuns = true;
-        else
-            init.createNewFile();
-        
-        return otherLanwordRuns;
-    };
     
     private static void generarPalabras() throws SQLException, ClassNotFoundException, IOException {
         IBDGestionPalabras bd = BDResolver.getInstance().palabras;
@@ -291,9 +274,7 @@ public class AppStartMenu extends javax.swing.JFrame {
 
         @Override
         public void windowClosing(WindowEvent e) {
-            // Se borra el fichero .lanword.
-            File f = new File(".lanword");
-            f.delete();
+            WindowsController.lanwordEnded();
         }
 
         @Override

@@ -5,25 +5,36 @@
  */
 package gui.administracion;
 
+import gui.AppStartMenu;
 import gui.util.GestionPaneles;
+import java.awt.HeadlessException;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author vikour
  */
-public class JDialogMainAdministracion extends javax.swing.JDialog {
+public class JFrameMainAdministracion extends javax.swing.JFrame {
     private GestionPaneles gesPanel;
     
-    /**
-     * Creates new form JDialogMainAdministracion
-     */
-    public JDialogMainAdministracion(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public JFrameMainAdministracion() throws HeadlessException {
         initComponents();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gesPanel = new GestionPaneles(JPanelContent, null);
         gesPanel.setVisiblePanel(new JPanelPalabras(), false);
+        addWindowListener(new OnWindowsEvent());
+        setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartMenu.class.getClassLoader().getResource("gui/images/icono.png")));   
         setTitle("Administración");
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,6 +49,7 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
         jButtonGrupos = new javax.swing.JButton();
         jButtonPalabras = new javax.swing.JButton();
         JPanelContent = new javax.swing.JPanel();
+        jButtonJugar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -74,6 +86,13 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
             .addGap(0, 424, Short.MAX_VALUE)
         );
 
+        jButtonJugar.setText("Jugar");
+        jButtonJugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonJugarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,7 +100,9 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JPanelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(JPanelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jButtonPalabras, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -89,8 +110,9 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
                         .addComponent(jButtonGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 376, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
+                        .addComponent(jButtonJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,7 +121,8 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonPalabras, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(JPanelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -124,6 +147,15 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
         gesPanel.setVisiblePanel(new JPanelPalabras(), false);
     }//GEN-LAST:event_jButtonPalabrasActionPerformed
 
+    private void jButtonJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonJugarActionPerformed
+        try {
+            gui.WindowsController.getInstance().showJuego();
+            setVisible(false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "No hay idiomas", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonJugarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -141,27 +173,28 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDialogMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDialogMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDialogMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDialogMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameMainAdministracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDialogMainAdministracion dialog = new JDialogMainAdministracion(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                JFrameMainAdministracion frame = new JFrameMainAdministracion();
+                frame.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });
-                dialog.setVisible(true);
+                frame.setVisible(true);
             }
         });
     }
@@ -170,6 +203,47 @@ public class JDialogMainAdministracion extends javax.swing.JDialog {
     private javax.swing.JPanel JPanelContent;
     private javax.swing.JButton jButtonGrupos;
     private javax.swing.JButton jButtonIdiomas;
+    private javax.swing.JButton jButtonJugar;
     private javax.swing.JButton jButtonPalabras;
     // End of variables declaration//GEN-END:variables
+
+    private class OnWindowsEvent implements WindowListener {
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+            // Do nothing
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            gui.WindowsController.lanwordEnded();
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+            // Do nothing
+            
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+            // Do nothing
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+            // Do nothing
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+            // Do nothing
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+            // Do nothing
+        }
+        
+    }
 }
