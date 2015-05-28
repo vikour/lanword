@@ -1,28 +1,55 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2015 Vikour.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package gui.juegos.traducir_palabras;
 
+import gui.AppStartMenu;
 import gui.util.GestionPaneles;
+import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import lanword.interfaces.bd.BDResolver;
 
 /**
  *
  * @author vikour
  */
-public class JDialogMain extends javax.swing.JDialog implements WindowListener {
+public class JDialogMain extends javax.swing.JFrame implements WindowListener {
 
-    public JDialogMain(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public JDialogMain() throws HeadlessException, SQLException, ClassNotFoundException, IOException, Exception {
         initComponents();
+        
+        if (BDResolver.getInstance().idiomas.buscar().size() < 2)
+            throw new Exception("Debe de haber al menos 2 idiomas en el sistema.");
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GestionPaneles gesPaneles = new GestionPaneles(jPanelContent, null);
         JPanelInicio inicio = new JPanelInicio(gesPaneles);
         gesPaneles.setVisiblePanel(inicio, false);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartMenu.class.getClassLoader().getResource("gui/images/icono.png")));   
         addWindowListener(this);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,14 +128,23 @@ public class JDialogMain extends javax.swing.JDialog implements WindowListener {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDialogMain dialog = new JDialogMain(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                JDialogMain frame = null;
+                try {
+                    frame = new JDialogMain();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(JDialogMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                frame.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });
-                dialog.setVisible(true);
+                frame.setVisible(true);
             }
         });
     }
@@ -124,7 +160,7 @@ public class JDialogMain extends javax.swing.JDialog implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-    e.getWindow().dispose();
+        gui.WindowsController.lanwordEnded();
     }
 
     @Override

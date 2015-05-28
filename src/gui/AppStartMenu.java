@@ -1,22 +1,33 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2015 Vikour.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package gui;
 
-import gui.administracion.JDialogMainAdministracion;
-import gui.juegos.traducir_palabras.JDialogMain;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import lanword.interfaces.bd.BDResolver;
+import lanword.interfaces.bd.IBDGestionPalabras;
+import lanword.modelo.Idioma;
+import lanword.modelo.Palabra;
 
 /**
  *
@@ -30,7 +41,7 @@ public class AppStartMenu extends javax.swing.JFrame {
     public AppStartMenu() {
         initComponents();
         this.addWindowListener(new AppWindowListener());
-        setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartup.class.getClassLoader().getResource("gui/images/icono.png")));        
+        setIconImage(Toolkit.getDefaultToolkit().getImage(AppStartMenu.class.getClassLoader().getResource("gui/images/icono.png")));        
     }
 
     /**
@@ -108,15 +119,17 @@ public class AppStartMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        setVisible(false);
-        new JDialogMain(this, true).setVisible(true);
-        setVisible(true);
+        try {
+            WindowsController.getInstance().showJuego();
+            setVisible(false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "No hay idiomas", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
-        new JDialogMainAdministracion(this, true).setVisible(true);
-        setVisible(true);
+        WindowsController.getInstance().showAdministracion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -157,11 +170,24 @@ public class AppStartMenu extends javax.swing.JFrame {
                 try {
                     BDResolver.getInstance().conectar();
                     
-                    if (checkIfAnotherLanwordRuns())
+                    if (WindowsController.checkIfAnotherLanwordRuns())
                         JOptionPane.showMessageDialog(null, "Lanword ya se está ejecutando.");
-                    else 
-                        new AppStartMenu().setVisible(true);
-                    
+                    else {
+
+                        if (BDResolver.getInstance().idiomas.buscar().isEmpty()) {
+                            int choice = 
+                                    JOptionPane.showConfirmDialog(null, "No hay palabras en la base de datos, \n"
+                                            + "¿quieres añadir las palabras predeterminadas?", "Palabras predeterminadas",
+                                            JOptionPane.YES_NO_OPTION);
+
+                            if (choice == JOptionPane.YES_OPTION) {
+                                generarPalabras();
+                            }
+                            
+                        }
+                        WindowsController.getInstance().showMenu();
+                    }
+
                 } catch (SQLException ex) {
                     Logger.getLogger(AppStartMenu.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
@@ -173,16 +199,70 @@ public class AppStartMenu extends javax.swing.JFrame {
         });
     }
     
-    private static boolean checkIfAnotherLanwordRuns() throws IOException {
-        boolean otherLanwordRuns = false;
-        File init = new File(".lanword");
+    private static void generarPalabras() throws SQLException, ClassNotFoundException, IOException {
+        IBDGestionPalabras bd = BDResolver.getInstance().palabras;
+        Idioma espanol = new Idioma("Español");
+        Idioma ingles = new Idioma("Inglés");
         
-        if (init.exists())
-            otherLanwordRuns = true;
-        else
-            init.createNewFile();
+        Palabra laptop = new Palabra("Laptop", ingles);
+        Palabra pc = new Palabra("Personal Computer", ingles);
+        Palabra hub = new Palabra("Hub", ingles);
+        Palabra router = new Palabra("Router", ingles);
+        Palabra monitor = new Palabra("Monitor", ingles);
+        Palabra mouse = new Palabra("Mouse", ingles);
+        Palabra keyboard = new Palabra("Keyboard", ingles);
+        Palabra motherboard = new Palabra("Motherboard", ingles);
+        Palabra harddisk = new Palabra("Hard disk", ingles);
+        Palabra opticaldrive = new Palabra("Optical drive", ingles);
+        Palabra printer = new Palabra("Printer", ingles);
+        Palabra codification = new Palabra("Codificacion", ingles);
+        Palabra software = new Palabra("Software", ingles);
+        Palabra hardware = new Palabra("hardware", ingles);
         
-        return otherLanwordRuns;
+        Palabra portatil = new Palabra("Portátil", espanol);
+        Palabra pc_es = new Palabra("Ordenador personal", espanol);
+        Palabra repetidor = new Palabra("Repetidor", espanol);
+        Palabra encaminador = new Palabra("Encaminador", espanol);
+        Palabra monitor_es = new Palabra("Monitor", espanol);
+        Palabra raton = new Palabra("Ratón", espanol);
+        Palabra teclado = new Palabra("Teclado", espanol);
+        Palabra placabase = new Palabra("Placa base", espanol);
+        Palabra discoduro = new Palabra("Disco duro", espanol);
+        Palabra lectoroptico = new Palabra("Lector óptico", espanol);
+        Palabra impresora = new Palabra("Impresora", espanol);
+        Palabra codificacion = new Palabra("Codificación", espanol);
+        Palabra software_es = new Palabra("Software", espanol);
+        Palabra hardware_es = new Palabra("Hardware", espanol);
+        
+        laptop.anyadirTraduccion(portatil);
+        pc.anyadirTraduccion(pc_es);
+        hub.anyadirTraduccion(repetidor);
+        router.anyadirTraduccion(encaminador);
+        monitor.anyadirTraduccion(monitor_es);
+        mouse.anyadirTraduccion(raton);
+        keyboard.anyadirTraduccion(teclado);
+        motherboard.anyadirTraduccion(placabase);
+        harddisk.anyadirTraduccion(discoduro);
+        opticaldrive.anyadirTraduccion(lectoroptico);
+        printer.anyadirTraduccion(impresora);
+        codification.anyadirTraduccion(codificacion);
+        software.anyadirTraduccion(software_es);
+        hardware.anyadirTraduccion(hardware_es);
+        
+        bd.anyadir(laptop);
+        bd.anyadir(pc);
+        bd.anyadir(hub);
+        bd.anyadir(router);
+        bd.anyadir(monitor);
+        bd.anyadir(mouse);
+        bd.anyadir(keyboard);
+        bd.anyadir(motherboard);
+        bd.anyadir(harddisk);
+        bd.anyadir(opticaldrive);
+        bd.anyadir(printer);
+        bd.anyadir(codification);
+        bd.anyadir(software);
+        bd.anyadir(hardware);
     };
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -201,9 +281,7 @@ public class AppStartMenu extends javax.swing.JFrame {
 
         @Override
         public void windowClosing(WindowEvent e) {
-            // Se borra el fichero .lanword.
-            File f = new File(".lanword");
-            f.delete();
+            WindowsController.lanwordEnded();
         }
 
         @Override
