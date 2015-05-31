@@ -441,7 +441,10 @@ public class JPanelPalabras extends javax.swing.JPanel {
                     else if (traducciones.size() == 2) {
                         return traducciones.get(0) + " y " + traducciones.get(1) + ".";
                     }
-                    else if (traducciones.size() > 3) {
+                    else if (traducciones.size() == 3) {
+                        return traducciones.get(0) + ", " + traducciones.get(1) + " y " + traducciones.get(2);
+                    }
+                    else {
                         
                         for (int i = 0 ; i < 3 ; i++)
                             

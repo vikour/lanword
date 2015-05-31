@@ -64,16 +64,18 @@ public class GestionGrupos implements IBDGestionGrupos{
                 grupo.stored(true);
                 
                 // Para cada palabra agrupada en el grupo, añadirla si no esta escrita.
-                for (Palabra palabra : grupo.getsPalabras())
+                for (Palabra palabra : grupo.getsPalabras()) {
                     
-                    if (!palabra.isStored()) {
-                        BDSQlite.getInstance().palabras.anyadir(palabra);
-                        pstat = con.prepareStatement(Statements.INSERT_GROUP_WORD);
-                        pstat.setString(1, palabra.getNombre());
-                        pstat.setString(2, palabra.getIdioma().getNombre());
-                        pstat.setString(3, grupo.getNombre());
-                        pstat.execute();
-                    }
+                    if (!palabra.isStored()) 
+                        BDSQlite. getInstance().palabras.anyadir(palabra);
+                        
+                    pstat = con.prepareStatement(Statements.INSERT_GROUP_WORD);
+                    pstat.setString(1, palabra.getNombre());
+                    pstat.setString(2, palabra.getIdioma().getNombre());
+                    pstat.setString(3, grupo.getNombre());
+                    pstat.execute();
+                    
+                }
                 
             }
             

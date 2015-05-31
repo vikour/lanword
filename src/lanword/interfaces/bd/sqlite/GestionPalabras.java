@@ -44,7 +44,7 @@ public class GestionPalabras implements IBDGestionPalabras {
         public static final String SELECT_FILTER_NAME_LANGUAGE = "SELECT * FROM palabras WHERE nombre like ? and idioma = ? ORDER BY idioma";
         public static final String SELECT_FILTER_GROUP = "SELECT p.nombre, p.idioma FROM palabras p, agrupaciones a WHERE a.grupo = ? and p.nombre = a.palabra and p.idioma = a.idioma ORDER BY p.idioma";
         public static final String SELECT_FILTER_LANGUAGE = "SELECT * FROM palabras WHERE idioma = ? ORDER BY idioma";
-        public static final String SELECT_FILTER_LANGUAGE_GROUP = "SELECT p.nombre, p.idioma FROM palabras p, agrupaciones a WHERE p.nombre = a.palabra AND a.grupo = ? AND p.idioma = ? ORDER BY p.idioma";
+        public static final String SELECT_FILTER_LANGUAGE_GROUP = "SELECT p.nombre, p.idioma FROM palabras p, agrupaciones a WHERE p.nombre = a.palabra AND p.idioma = a.idioma AND a.grupo = ? AND p.idioma = ? ORDER BY p.idioma";
         public static final String SELECT_FILTER_NAME_GROUP_LANGUAGE = "SELECT p.nombre, p.idioma FROM palabras p, agrupaciones a WHERE p.nombre = a.palabra AND p.idioma = ? AND p.nombre like ? AND a.grupo = ? ORDER BY idioma";
         public static final String SELECT_WORD_WITHOUT_GROUP_X = "SELECT nombre, idioma FROM palabras " +
                                                                  "EXCEPT " + 
@@ -55,7 +55,7 @@ public class GestionPalabras implements IBDGestionPalabras {
         public static final String SELECT_RANDOM_LANGUAGE = "SELECT palabra AS nombre, idioma_palabra AS idioma FROM traducciones WHERE idioma_palabra = ? AND idioma_traduccion = ? ORDER BY RANDOM()";
         public static final String SELECT_RANDOM_GROUP = "SELECT palabra AS nombre, idioma_palabra AS idioma FROM traducciones WHERE idioma_traduccion = ? " +
                                                          "INTERSECT " +
-                                                         "SEELCT palabra AS nombre, idioma FROM agrupaciones WHERE grupo = ?";
+                                                         "SELECT palabra AS nombre, idioma FROM agrupaciones WHERE grupo = ?";
         public static final String UPDATE_NAME = "UPDATE palabras SET nombre = ? WHERE nombre = ? AND idioma = ? ";
         public static final String UPDATE_LANGUAGE = "UPDATE palabras SET idioma = ? WHERE nombre = ? AND idioma = ? ";
         public static final String UPDATE_NEW_TRADUCTION = "INSERT INTO traducciones VALUES (?, ?, ?, ?)";

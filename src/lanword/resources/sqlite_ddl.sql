@@ -58,19 +58,22 @@ CREATE TRIGGER rellenar_traduccion
 AFTER INSERT ON traducciones
 FOR EACH ROW BEGIN
 
-   INSERT INTO traducciones VALUES
-   (NEW.traduccion, NEW.idioma_traduccion, NEW.palabra, NEW.idioma_palabra);
+   INSERT INTO traducciones
+   SELECT NEW.traduccion, NEW.idioma_traduccion, NEW.palabra, NEW.idioma_palabra
+   WHERE NEW.idioma_traduccion <> NEW.idioma_palabra;
 
    INSERT INTO traducciones 
    SELECT NEW.traduccion, NEW.idioma_traduccion, traduccion, idioma_traduccion
    FROM traducciones
-   WHERE palabra = NEW.palabra AND traduccion <> NEW.traduccion
+   WHERE palabra = NEW.palabra AND traduccion <> NEW.traduccion AND
+         idioma_traduccion <> NEW.idioma_traduccion
 
    UNION
 
    SELECT traduccion, idioma_traduccion, NEW.traduccion, NEW.idioma_traduccion
    FROM traducciones
-   WHERE palabra = NEW.palabra AND traduccion <> NEW.traduccion;
+   WHERE palabra = NEW.palabra AND traduccion <> NEW.traduccion AND
+         idioma_traduccion <> NEW.idioma_traduccion;
 
 END;
 

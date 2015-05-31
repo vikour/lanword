@@ -272,8 +272,8 @@ public class Palabra extends ClasePersistente {
         
         if (obj instanceof Palabra) {
             Palabra p = (Palabra) obj;
-        
-            return p.getNombre().matches(nombre);
+            
+            return p.getNombre().matches(nombre) && p.getIdioma().equals(idioma);
         }
         else
             return false;

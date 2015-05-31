@@ -25,7 +25,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import lanword.interfaces.bd.BDResolver;
+import lanword.interfaces.bd.IBDGestionGrupos;
 import lanword.interfaces.bd.IBDGestionPalabras;
+import lanword.modelo.Grupo;
 import lanword.modelo.Idioma;
 import lanword.modelo.Palabra;
 
@@ -200,7 +202,8 @@ public class AppStartMenu extends javax.swing.JFrame {
     }
     
     private static void generarPalabras() throws SQLException, ClassNotFoundException, IOException {
-        IBDGestionPalabras bd = BDResolver.getInstance().palabras;
+        IBDGestionPalabras bdPalabras = BDResolver.getInstance().palabras;
+        IBDGestionGrupos bdGrupos = BDResolver.getInstance().grupos;
         Idioma espanol = new Idioma("Español");
         Idioma ingles = new Idioma("Inglés");
         
@@ -234,6 +237,8 @@ public class AppStartMenu extends javax.swing.JFrame {
         Palabra software_es = new Palabra("Software", espanol);
         Palabra hardware_es = new Palabra("Hardware", espanol);
         
+        Grupo informatica = new Grupo("Informática", "Palabras que aparecen en el ámbito informático.");
+        
         laptop.anyadirTraduccion(portatil);
         pc.anyadirTraduccion(pc_es);
         hub.anyadirTraduccion(repetidor);
@@ -249,20 +254,37 @@ public class AppStartMenu extends javax.swing.JFrame {
         software.anyadirTraduccion(software_es);
         hardware.anyadirTraduccion(hardware_es);
         
-        bd.anyadir(laptop);
-        bd.anyadir(pc);
-        bd.anyadir(hub);
-        bd.anyadir(router);
-        bd.anyadir(monitor);
-        bd.anyadir(mouse);
-        bd.anyadir(keyboard);
-        bd.anyadir(motherboard);
-        bd.anyadir(harddisk);
-        bd.anyadir(opticaldrive);
-        bd.anyadir(printer);
-        bd.anyadir(codification);
-        bd.anyadir(software);
-        bd.anyadir(hardware);
+        informatica.agrupar(portatil);
+        informatica.agrupar(pc_es);
+        informatica.agrupar(repetidor);
+        informatica.agrupar(encaminador);
+        informatica.agrupar(monitor_es);
+        informatica.agrupar(raton);
+        informatica.agrupar(teclado);
+        informatica.agrupar(placabase);
+        informatica.agrupar(discoduro);
+        informatica.agrupar(lectoroptico);
+        informatica.agrupar(impresora);
+        informatica.agrupar(codificacion);
+        informatica.agrupar(software_es);
+        informatica.agrupar(hardware_es);
+
+        bdPalabras.anyadir(portatil);
+        bdPalabras.anyadir(pc);
+        bdPalabras.anyadir(hub);
+        bdPalabras.anyadir(router);
+        bdPalabras.anyadir(monitor);
+        bdPalabras.anyadir(mouse);
+        bdPalabras.anyadir(keyboard);
+        bdPalabras.anyadir(motherboard);
+        bdPalabras.anyadir(harddisk);
+        bdPalabras.anyadir(opticaldrive);
+        bdPalabras.anyadir(printer);
+        bdPalabras.anyadir(codification);
+        bdPalabras.anyadir(software);
+        bdPalabras.anyadir(hardware);
+        
+        bdGrupos.anyadir(informatica);
     };
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
