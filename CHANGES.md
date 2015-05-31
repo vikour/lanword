@@ -1,17 +1,14 @@
 ## Siguiente versión.
 
-- *Bugs*
- - [ ] Solucionar el bug de las traducciones transitivas. Issue #6.
- - [ ] Solucionar el bug gráfico de la tabla de palabras. Issue #5.
 - *Funcionalidad*
  - [x] Permitir cargar una estructura de palabras si la base de datos está vacía.
  - [x] Añadir texto informativo acerca de como funciona el juego.
  - [x] No permitir iniciar el juego si no hay al menos dos idiomas.
  - [x] Permitir desde administración ir a juego y vicebersa.
 - *Documentación*
- - [ ] Pruebas realizadas.
+ - [x] Pruebas realizadas.
  - [x] Manual de instalación.
- - [ ] Manual del usuario.
+ - [x] Manual del usuario.
 
 ## Versión 1.0.1
 - Solucionado el problema de comparación del caché.
