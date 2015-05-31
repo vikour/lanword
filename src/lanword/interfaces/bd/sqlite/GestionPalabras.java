@@ -52,10 +52,10 @@ public class GestionPalabras implements IBDGestionPalabras {
         public static final String SELECT_PROBABLY_TRADUCTION = "SELECT * FROM palabras WHERE idioma = ? " + 
                                                                 "EXCEPT " +
                                                                 "SELECT traduccion AS nombre, idioma_traduccion AS idioma FROM traducciones WHERE palabra = ?";
-        public static final String SELECT_RANDOM_LANGUAGE = "SELECT palabra AS nombre, idioma_palabra AS idioma FROM traducciones WHERE idioma_palabra = ? AND idioma_traduccion = ? ORDER BY RANDOM() LIMIT 10";
-        public static final String SELECT_RANDOM_GROUP = "SELECT * FROM (SELECT palabra AS nombre, idioma_palabra AS idioma FROM traducciones WHERE idioma_traduccion = ? " +
+        public static final String SELECT_RANDOM_LANGUAGE = "SELECT DISTINCT palabra AS nombre, idioma_palabra AS idioma FROM traducciones WHERE idioma_palabra = ? AND idioma_traduccion = ? ORDER BY RANDOM() LIMIT 10";
+        public static final String SELECT_RANDOM_GROUP = "SELECT * FROM (SELECT DISTINCT palabra AS nombre, idioma_palabra AS idioma FROM traducciones WHERE idioma_traduccion = ? " +
                                                          "INTERSECT " +
-                                                         "SELECT palabra AS nombre, idioma FROM agrupaciones WHERE grupo = ?) LIMIT 10";
+                                                         "SELECT DISTINCT palabra AS nombre, idioma FROM agrupaciones WHERE grupo = ?) LIMIT 10";
         public static final String UPDATE_NAME = "UPDATE palabras SET nombre = ? WHERE nombre = ? AND idioma = ? ";
         public static final String UPDATE_LANGUAGE = "UPDATE palabras SET idioma = ? WHERE nombre = ? AND idioma = ? ";
         public static final String UPDATE_NEW_TRADUCTION = "INSERT INTO traducciones VALUES (?, ?, ?, ?)";
